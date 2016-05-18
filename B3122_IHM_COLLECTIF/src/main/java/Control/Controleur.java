@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 
 /**
  *
@@ -32,6 +33,7 @@ public class Controleur extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -44,8 +46,12 @@ public class Controleur extends HttpServlet {
                 rd.forward(request, response);      */
                 Util.JsonSender.printListeActivites(response.getWriter(), (List<Activite>) request.getAttribute("Activites"));
                 break;
-                     
-        }
+                
+            case "Connexion":
+                Action actionConnexion = new ConnexionAction();
+                actionConnexion.execute(request);
+                Util.JsonSender.sendResultConnect(response.getWriter(), (Adherent) request.getAttribute("Adherents"));
+        }   
         
     }
 

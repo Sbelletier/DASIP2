@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import java.io.PrintWriter;
 import java.util.List;
 import metier.modele.Activite;
+import metier.modele.Adherent;
 
 /**
  *
@@ -31,6 +32,33 @@ public class JsonSender {
         }
         JsonObject container = new JsonObject();
         container.add("activites",jlist);
+        
+        //ecriture
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(container);
+        out.println(result);
+    }
+    
+    public static void sendResultConnect(PrintWriter out, Adherent a)
+    {
+     
+        JsonObject jact = new JsonObject();
+        if( a == null)
+        {
+            jact.addProperty("co", false);
+        }
+        else
+        {
+            jact.addProperty("co", true);
+            //        jact.addProperty("nom", a.getNom());
+//        jact.addProperty("prenom", a.getPrenom() );
+//        jact.addProperty("id", a.getId());
+//        jact.addProperty("latitude",a.getLatitude());
+//        jact.addProperty("longitude",a.getLongitude());
+        }
+
+        JsonObject container = new JsonObject();
+        container.add("adherent",jact);
         
         //ecriture
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
