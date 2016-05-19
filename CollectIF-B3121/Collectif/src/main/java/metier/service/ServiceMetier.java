@@ -44,7 +44,7 @@ public class ServiceMetier {
         catch ( Throwable e )
         {
             JpaUtil.annulerTransaction ( );
-            throw new ServiceException ( "ERREUR : creation d'un adherant" );
+            throw new ServiceException ( "ERREUR : creation d'un adherent "+e.getMessage()  );
         }
         finally
         {

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import metier.modele.Activite;
 import metier.modele.Adherent;
+import metier.service.ServiceException;
 
 /**
  *
@@ -45,12 +46,17 @@ public class Controleur extends HttpServlet {
                 /*RequestDispatcher rd = request.getRequestDispatcher("/VueListeActivites");
                 rd.forward(request, response);      */
                 Util.JsonSender.printListeActivites(response.getWriter(), (List<Activite>) request.getAttribute("Activites"));
-                break;
-                
+                break;   
             case "Connexion":
                 Action actionConnexion = new ConnexionAction();
                 actionConnexion.execute(request);
                 Util.JsonSender.sendResultConnect(response.getWriter(), (Adherent) request.getAttribute("Adherents"));
+                break;
+            case "Inscription":
+                Action actionInscription = new InscriptionAction();
+                actionInscription.execute(request);
+                Util.JsonSender.sendResultConnect(response.getWriter(), (Adherent) request.getAttribute("Adherent"));
+                break;
         }   
         
     }

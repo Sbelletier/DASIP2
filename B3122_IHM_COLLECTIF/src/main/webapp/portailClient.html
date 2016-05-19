@@ -6,11 +6,27 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Accueil</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			
+			.mainDiv{
+				position : relative;
+				left : 25%;
+				border : 2px solid black;
+				width : 50%;
+                                padding: 2%;
+			}
+		</style>
     </head>
-    <body>
-        <div>Portail Client</div>
-    </body>
+	<body>
+		<a href="./index.html">&lt; déconnexion </a>
+		<div id="divAccueil" style="text-align:center;" class="mainDiv">
+			<h1 style="margin:4%"> Accueil </h1>
+			<button style="width:70%; margin:1%;" id="btnDemandeEvent" onclick="self.location.href='DemandeEvenement.html'"> Demande d'événement <hr/> </button>
+			<button style="width:70%; margin:1%;" id="btnMyEvents" onclick="self.location.href='MesEvenements.html'"> Mes évènements <hr/> </button>
+			<button style="width:70%; margin:1%; margin-bottom:3%" id="btnMyHistory" onclick="self.location.href='MesDemandes.html'"> Historique des demandes <hr/> </button>
+		</div>
+	</body>
 </html>

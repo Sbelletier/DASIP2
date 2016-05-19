@@ -9,23 +9,90 @@ and open the template in the editor.
         <title>Connexion</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<style>
-			
-			.mainDiv{
-				position : relative;
-				left : 25%;
-				border : 2px solid black;
-				width : 50%;
-			}
-		</style>
+        <style>
+            form{
+                line-height: 180%;
+            }
+            .mainDiv{
+                position : relative;
+                left : 25%;
+                border : 2px solid black;
+                width : 50%;
+                text-align : center;
+            }
+            #messageErreur{
+                color : red;
+            }
+        
+        </style>
+         <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
         <a href="./index.html">&lt Retour </a>
-        <div id="divDeConnexion" style="text-align:center;" class="mainDiv">
-			<h1> Connexion </h1>
-			<div id="divEmail" style="padding:1%; padding-top:5%;"> E-mail <input type="text" id="inputEmail" value="xxxx@smthing.com" >  </input> </div>
-			<div id="divPassword" style="padding:1%;"> Mot de passe <input type="password" id="inputPassword" >  </input> </div>
-			<button id="btnValidation"style="margin:2%; margin-bottom:5%;"> &gt;Connexion </button>
-		</div>
+        <div class="mainDiv">
+            <h1>Connexion</h1>
+            <form id="connexionForm" action="javascript:connection()" method="GET" name="formConnexion">
+                <label for="GET-email">Email :</label>
+                <input id="GET-email" type="text" name="email">
+                <br/>
+                <label for="GET-pass">Password :</label>
+                <input id="GET-pass" type="password" name="password">
+                <br/>
+                <input type="submit" value="Connexion">
+                <p id="messageErreur" style="visibility:hidden;"></p>
+            </form>
+        </div>
+        
+        
+        <script>
+            
+            function connection() 
+            {
+                if($("#GET-pass").val() == "" || $("#GET-email").val() == "")
+                {
+                    $("#messageErreur").html("Erreur: Un des champs n'est pas rempli");
+                    $("#messageErreur").css("visibility","visible");
+                }
+                else
+                {
+                    $.ajax({
+                    url: './Controleur',
+                    type: 'POST',
+                    data: {
+                            action: 'Connexion',
+                            email: $("#GET-email").val(),
+                            password: $("#GET-pass").val(),  
+
+                        },
+                    dataType: 'json'
+                    })
+                    .done(function(data) {
+                        console.log("inDone");
+                        var co = data.adherent.co;
+                        if (co)
+                        {                  
+                            document.location.href="portailClient.html"
+                        }
+                        else
+                        {
+                            $("#messageErreur").html("Erreur de mot de passe ou d'adresse email");
+                            $("#messageErreur").css("visibility","visible");
+                        }
+                    })
+                    .fail(function() {
+                       // $('#listeActivites').html('ERREUR de chargement');
+                    console.log("FAIL");
+                    })
+                    .always(function() {
+                        //
+                    });
+                }
+        
+            }
+     
+             
+         </script>
     </body>
+    
 </html>
+

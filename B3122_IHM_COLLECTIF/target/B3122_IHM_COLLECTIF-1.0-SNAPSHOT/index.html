@@ -6,18 +6,26 @@
         <style>
             body{
                 text-align: center;
-                height : 100%;
+                height : 1000px;
+                line-height:100%;
+                line-height:22px;
+            }
+            p
+            {
+                height: 40%;
+            }
+            
+            div{
+                height: 30%;
             }
             button{
-                height : 100%;
+                height: 100%;
                 width : 30%;
-            }
-            
-            #divButton{
-                height:80%;
+                margin-left: 30px;
                 
             }
-            
+          
+    
         </style>
     </head>
     <body>
@@ -26,8 +34,8 @@
             <p> Un petit texte de bienvenue, afin de présenter le service tout ça, tout ça...</p>
         </header>
     <div id="divButton">
-        <button id="BConnexion"><img src="" alt="cadenas" /><br/>Connexion</button>
-        <button id="BInscription"><img src="" alt="crayon" /><br/>Inscription</button>
+        <button id="BConnexion" onclick="self.location.href='Connexion.html'"><img src="" alt="cadenas" /><br/>Connexion</button>
+        <button id="BInscription" onclick="self.location.href='Inscription.html'"><img src="" alt="crayon" /><br/>Inscription</button>
     </div>
         
         
@@ -40,5 +48,10 @@
             <a href = 'listeActivites.html'>Voir la liste des activités</a><br/>
             <!--<a href = "Controleur?action=listeActivite"> test </a>-->
         </p>
+        
+        
+        
+         
+        
     </body>
 </html>

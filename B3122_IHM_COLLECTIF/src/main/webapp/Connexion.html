@@ -13,34 +13,45 @@ and open the template in the editor.
             form{
                 line-height: 180%;
             }
+            .mainDiv{
+                position : relative;
+                left : 25%;
+                border : 2px solid black;
+                width : 50%;
+                text-align : center;
+            }
+            #messageErreur{
+                color : red;
+            }
         
         </style>
          <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
         <a href="./index.html">&lt Retour </a>
-        <div>Connexion</div>
-        <form id="connexionForm" action="javascript:connection()" method="GET" name="formConnexion">
-            <label for="GET-email">Email :</label>
-            <input id="GET-email" type="text" name="email">
-            <br/>
-            <label for="GET-pass">Password :</label>
-            <input id="GET-pass" type="text" name="password">
-            <br/>
-            <input type="submit" value="Connexion">
-            <p id="messageErreur" style="visibility:hidden;"></p>
-        </form>
-        
+        <div class="mainDiv">
+            <h1>Connexion</h1>
+            <form id="connexionForm" action="javascript:connection()" method="GET" name="formConnexion">
+                <label for="GET-email">Email :</label>
+                <input id="GET-email" type="text" name="email">
+                <br/>
+                <label for="GET-pass">Password :</label>
+                <input id="GET-pass" type="password" name="password">
+                <br/>
+                <input type="submit" value="Connexion">
+                <p id="messageErreur" style="visibility:hidden;"></p>
+            </form>
+        </div>
         
         
         <script>
             
             function connection() 
             {
-                if(document.formConnexion.password.value == "" || document.formConnexion.email.value == "")
+                if($("#GET-pass").val() == "" || $("#GET-email").val() == "")
                 {
-                    document.getElementById("messageErreur").innerHTML="Erreur: Un des champs n'est pas rempli"
-                    document.getElementById("messageErreur").style.visibility = "visible";
+                    $("#messageErreur").html("Erreur: Un des champs n'est pas rempli");
+                    $("#messageErreur").css("visibility","visible");
                 }
                 else
                 {
@@ -48,33 +59,33 @@ and open the template in the editor.
                     url: './Controleur',
                     type: 'POST',
                     data: {
-                        action: 'Connexion',
-                        email: document.getElementById("GET-email").value,
-                        password: document.getElementById("GET-pass").value,  
-                        
-                    },
+                            action: 'Connexion',
+                            email: $("#GET-email").val(),
+                            password: $("#GET-pass").val(),  
+
+                        },
                     dataType: 'json'
-                })
-                .done(function(data) {
-                    console.log("inDone");
-                    var co = data.adherent.co;
-                    if (co)
-                    {                  
-                        document.location.href="portailClient.html"
-                    }
-                    else
-                    {
-                        document.getElementById("messageErreur").innerHTML="Erreur de mot de passe ou d'adresse email"
-                        document.getElementById("messageErreur").style.visibility = "visible";
-                    }
-                })
-                .fail(function() {
-                   // $('#listeActivites').html('ERREUR de chargement');
-           console.log("FAIL");
-                })
-                .always(function() {
-                    //
-                });
+                    })
+                    .done(function(data) {
+                        console.log("inDone");
+                        var co = data.adherent.co;
+                        if (co)
+                        {                  
+                            document.location.href="portailClient.html"
+                        }
+                        else
+                        {
+                            $("#messageErreur").html("Erreur de mot de passe ou d'adresse email");
+                            $("#messageErreur").css("visibility","visible");
+                        }
+                    })
+                    .fail(function() {
+                       // $('#listeActivites').html('ERREUR de chargement');
+                    console.log("FAIL");
+                    })
+                    .always(function() {
+                        //
+                    });
                 }
         
             }

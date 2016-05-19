@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Detail de l'Evenement</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+        
+        <style>
+
+            .mainDiv{
+                    position : relative;
+                    left : 25%;
+                    border : 2px solid black;
+                    width : 50%;
+                    padding: 2%
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div> <a href="./EvenementsManager.html"> &lt; retour </a> <a href="./index.html" style="text-align:right;float:right;">&gt; déconnexion </a> </div>
+        <div id="divprinc" style="text-align:center;" class="mainDiv">
+            <h1>Evenement</h1>
+            <div id="map" style="width:80%;height:80%;position:relative;left:10%;min-height: 400px;"></div>
+            <div id="detailsEvenement">
+                
+            </div>
+        </div>
+        <script>
+            
+            var map;
+            var coordEv;
+            
+            function initMap(){
+                initMap2(4.842223 , 45.759723)
+            }
+            
+            
+            function initMap2(x, y){
+                var mapDiv = document.getElementById("map");
+                map = new google.maps.Map(mapDiv, {
+                    center :{lat: y, lng: x},
+                    zoom : 13
+                }); 
+            }
+            
+            $(document).ready( function(){
+                query = window.location.search;
+                idEvenement = parseInt( query.substring(3) );
+                $.ajax({
+                    url: './Controleur',
+                    type: 'POST',
+                    data: {
+                        action: 'changerEvenementManager',
+                        id: idEvenement
+                    },
+                    dataType: 'json'
+                })       
+                .done(function(data){
+                    console.log("inDone");
+                    evenement = data.evenement;
+                    lieux = data.lieux;
+                    markers = [];
+                    for(i=0;i<lieux.length;i++)
+                    {
+                       markers.push(new google.maps.Marker({
+                           map:map,
+                           position: {lat:lieux[i].lat, lng:ieux[i].lng},
+                           title: lieux[i].denomination,
+                           indiceLieux:i
+                       }) 
+                       );
+                       markers[i].addListener('click', function(){
+                           //TODO : ajax ici + alert
+                       } );
+                    }   
+                })
+            });
+            
+            
+        </script>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDcVVJjfmxsNdbdUYeg9MjQoJJ6THPuap4&callback=initMap" async defer></script>
+    </body>
+</html>
