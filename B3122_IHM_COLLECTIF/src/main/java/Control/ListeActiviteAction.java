@@ -29,5 +29,4 @@ public class ListeActiviteAction extends Action {
             request.setAttribute( "Activites", null );
         }
     }
-    
 }

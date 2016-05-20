@@ -55,17 +55,19 @@ and open the template in the editor.
                             url: './Controleur',
                             type: 'POST',
                             data: {
-                                action: 'evenementsClient'
+                                action: 'evenementsClient',
+                                dummy: 'dummy'
                             },
                             dataType: 'json'
                         })
+                        //si lieu à NULL l'evenement est en attente sinon il est validé
                          .done(function(data) {
                             console.log("inDone")
                             evenements = data.evenements;
                             var contenuHtml = "";
                             var i;
                             for (i = 0; i < evenements.length; i++) {
-                                contenuHtml += '<tr onclick="detailEvenement('+i+');"> <td>' + evenements[i].nomActivité + '</td> <td> '+ evenements[i].date + '</td> <td> '+ evenements[i].lieu + '</td> <td> '+ evenements[i].etat + '</td></tr>'; 
+                                contenuHtml += '<tr onclick="detailEvenement('+i+');"> <td>' + evenements[i].nomActivite + '</td> <td> '+ evenements[i].date + '</td> <td> '+ evenements[i].lieu + '</td> <td> '+ evenements[i].etat + '</td></tr>'; 
                             }
                             $("#divEvents>table>tbody").html(topRow + contenuHtml);
                         })
@@ -76,7 +78,7 @@ and open the template in the editor.
 
                 );
                 
-                detailEvenement(i)
+                function detailEvenement(i)
                 {
                     document.location.href="./detailEvenementClient.html?id="+evenements[i].id;
                 }

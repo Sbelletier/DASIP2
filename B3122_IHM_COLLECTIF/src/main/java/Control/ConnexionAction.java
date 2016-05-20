@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import metier.modele.Adherent;
 import static metier.modele.Adherent_.mdp;
 import metier.service.ServiceException;
@@ -27,9 +28,12 @@ public class ConnexionAction extends Action{
         try {
             Adherent adherentConnecte = ServiceMetier.identifierAdherentParEmailEtMotDePasse(request.getParameter("email"), request.getParameter("password"));
             request.setAttribute( "Adherents", adherentConnecte );
+            HttpSession session =request.getSession();
+            session.setAttribute("user", adherentConnecte);
         } catch (ServiceException ex) {
             Logger.getLogger(ConnexionAction.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute( "Adherents", null );
+            request.setAttribute("Resultat", false);
         }
         
     }

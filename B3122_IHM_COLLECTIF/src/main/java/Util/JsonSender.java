@@ -10,9 +10,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import metier.modele.Activite;
 import metier.modele.Adherent;
+import metier.modele.Evenement;
 
 /**
  *
@@ -39,27 +41,52 @@ public class JsonSender {
         out.println(result);
     }
     
-    public static void sendResultConnect(PrintWriter out, Adherent a)
+    public static void sendResult(PrintWriter out, boolean a)
     {
      
         JsonObject jact = new JsonObject();
-        if( a == null)
-        {
-            jact.addProperty("co", false);
-        }
-        else
-        {
-            jact.addProperty("co", true);
+        
+            jact.addProperty("resultat", a);
+          
             //        jact.addProperty("nom", a.getNom());
 //        jact.addProperty("prenom", a.getPrenom() );
 //        jact.addProperty("id", a.getId());
 //        jact.addProperty("latitude",a.getLatitude());
 //        jact.addProperty("longitude",a.getLongitude());
-        }
+        
 
         JsonObject container = new JsonObject();
-        container.add("adherent",jact);
+        container.add("resultat",jact);
         
+        //ecriture
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String result = gson.toJson(container);
+        out.println(result);
+    }
+    
+    public static void sendResult(PrintWriter out, List<Evenement> l)
+    {
+        
+        
+        JsonArray jlist = new JsonArray();
+        for(Evenement e:l)
+        {
+            JsonObject jact = new JsonObject();
+            jact.addProperty("nomActivite", e.getActivite().getDenomination() );
+            Date d = e.getDateEvenement();
+            if(d == null){
+                jact.addProperty("date","-");
+                jact.addProperty("etat","-");
+            }
+            else{
+                jact.addProperty("date", d.toString() );
+                jact.addProperty("etat","OK");
+            }
+            jact.addProperty("lieu", e.getLieuEvenement().getDenomination());
+            jlist.add(jact);
+        }
+        JsonObject container = new JsonObject();
+        container.add("evenements",jlist);
         //ecriture
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String result = gson.toJson(container);

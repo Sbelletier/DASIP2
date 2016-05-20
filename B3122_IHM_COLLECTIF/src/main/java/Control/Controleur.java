@@ -5,6 +5,7 @@
  */
 package Control;
 
+import Util.JsonSender;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,9 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import metier.modele.Activite;
 import metier.modele.Adherent;
-import metier.service.ServiceException;
+import metier.modele.Evenement;
 
 /**
  *
@@ -24,6 +26,7 @@ import metier.service.ServiceException;
  */
 @WebServlet(name = "Controleur", urlPatterns = {"/Controleur"})
 public class Controleur extends HttpServlet {
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,17 +49,48 @@ public class Controleur extends HttpServlet {
                 /*RequestDispatcher rd = request.getRequestDispatcher("/VueListeActivites");
                 rd.forward(request, response);      */
                 Util.JsonSender.printListeActivites(response.getWriter(), (List<Activite>) request.getAttribute("Activites"));
-                break;   
+                break;
+                
             case "Connexion":
                 Action actionConnexion = new ConnexionAction();
                 actionConnexion.execute(request);
-                Util.JsonSender.sendResultConnect(response.getWriter(), (Adherent) request.getAttribute("Adherents"));
+                
+                if(request.getSession().getAttribute("user") != null)
+                {
+                    Util.JsonSender.sendResult(response.getWriter(), true);
+                    //RequestDispatcher dispatcher= request.getRequestDispatcher("portailClient.html");
+                  //  dispatcher.forward(request, response);
+                }
+                else
+                {
+                    Util.JsonSender.sendResult(response.getWriter(), false);
+                }
+                
+                break;
+            case "soumettreEvenement":
+                Action actionSoumettreEvenement = new ActionSoumettreEvenement();
+                actionSoumettreEvenement.execute(request);
+                if((boolean)request.getAttribute("success"))
+                {
+                    JsonSender.sendResult(response.getWriter(), true);
+                }
+                else
+                {
+                    Util.JsonSender.sendResult(response.getWriter(), false);
+                }
+                
                 break;
             case "Inscription":
                 Action actionInscription = new InscriptionAction();
                 actionInscription.execute(request);
-                Util.JsonSender.sendResultConnect(response.getWriter(), (Adherent) request.getAttribute("Adherent"));
+                Util.JsonSender.sendResult(response.getWriter(), true);
                 break;
+            case "evenementsClient":
+                Action evtClient = new ListeEvenementsClientAction();
+                evtClient.execute(request);
+                Util.JsonSender.sendResult(response.getWriter(), (List<Evenement>) request.getAttribute("Evenements") );
+                break;   
+                      
         }   
         
     }

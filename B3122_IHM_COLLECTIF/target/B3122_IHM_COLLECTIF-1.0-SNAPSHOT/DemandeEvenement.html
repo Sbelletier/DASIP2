@@ -9,6 +9,7 @@ and open the template in the editor.
         <title>Demande d'evenement </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
 		<style>
 			
 			.mainDiv{
@@ -17,6 +18,12 @@ and open the template in the editor.
 				border : 2px solid black;
 				width : 50%;
 			}
+                        
+                        ul {
+                            list-style:none;
+                            margin-left:0;
+                            padding-left:0;
+                        }
 		</style>
     </head>
 	<body>
@@ -25,11 +32,99 @@ and open the template in the editor.
 			<h1> Demande d'événement </h1>
 			<div>
 				<button style="display:inline-block; height:40%; font-size:18px;" id="btnPagePrec"> &lt; </button>
-				<div style="display:inline-block; height:50%; width:50%; border: 2px solid black;" id="divEvents"> </div>
+				<div style="display:inline-block; height:50%; width:50%; border: 2px solid black;" id="listeActivites"> 
+                                    <form id="formActivite" method="GET">
+                                        <ul id="listeActivites">
+                                            
+                                            
+                                        </ul>
+                                        
+                                    </form>
+                                </div>
 				<button style="display:inline-block; height:40%; font-size:18px;" id="btnPageSuiv"> &gt; </button>
-				<div> Date de l'evenement <input type="text" id="inputDateText"/> <!-- replace with Jquery UI datepicker --> </div>
-				<button style="margin-bottom:3%;" id="btnValidation"> Valider </button>
+				<div  style="margin-top:1%;" > Date de l'evenement <input type="text" id="inputDateText"/> <!-- replace with Jquery UI datepicker --> </div>
+				<button style="margin-bottom:3%; margin-top:1%;" id="btnValidation"> Valider </button>
 			</div>
+                        <p id="messageErreur"></p>
 		</div>
+                
+               
+                <script>
+                    
+                    $("#btnValidation").click(function(){
+                        var a=$('input[name="choix"]:checked').val();
+                        if(a != null)
+                        {
+                            sendSoumettreEvenement();
+                        }
+                        else
+                        {
+                            $("#messageErreur").html("Erreur: Aucune activité selectionnée");
+                        }
+                        
+                    })
+                    
+                    function sendSoumettreEvenement()
+                    {
+                        $.ajax({
+                             url: './Controleur',
+                            type: 'GET',
+                            data: {
+                                action: 'soumettreEvenement',
+                                idActivite: $('input[name="choix"]:checked').attr("data-idActivite"),
+                                
+                                date: $('#inputDateText').val(),
+                            },
+                            dataType: 'json'
+                        }).done(function(data){
+                        var ajout = data.resultat.resultat;
+                        if (ajout)
+                        {                  
+                            alert("Demande enregistrée !");
+                            document.location.href="portailClient.html";
+                        }
+                        else
+                        {
+                            $("#messageErreur").html("Erreur lors de la demande veuillez reesayer...");
+                        }
+                        });
+                    }
+                    
+                    
+                    $(function() {
+
+                        $.ajax({
+                            url: './Controleur',
+                            type: 'GET',
+                            data: {
+                                action: 'listeActivite',
+                            },
+                            dataType: 'json'
+                        })
+                        .done(function(data) {
+                            console.log("inDone")
+                            var activites = data.activites;
+                            var contenuHtml = "";
+                            contenuHtml += '<ul>';
+                            var i;
+                            for (i = 0; i < activites.length; i++) {
+                                contenuHtml += '<li><input name="choix" type="radio" value='+activites[i].nom+' data-idActivite='+activites[i].id+'>'+ activites[i].nom + '</input></li>';
+                            }
+                            contenuHtml += '</ul>';
+                            $('#listeActivites').html(contenuHtml);
+
+
+                        })
+                        .fail(function() {
+                            $('#listeActivites').html('ERREUR de chargement');
+                        })
+                        .always(function() {
+                            //
+                        });
+
+                    });
+
+                </script>
+
 	</body>
 </html>

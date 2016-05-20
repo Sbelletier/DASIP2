@@ -39,7 +39,7 @@ and open the template in the editor.
                 <input id="GET-pass" type="password" name="password">
                 <br/>
                 <input type="submit" value="Connexion">
-                <p id="messageErreur" style="visibility:hidden;"></p>
+                <p id="messageErreur" ></p>
             </form>
         </div>
         
@@ -51,7 +51,6 @@ and open the template in the editor.
                 if($("#GET-pass").val() == "" || $("#GET-email").val() == "")
                 {
                     $("#messageErreur").html("Erreur: Un des champs n'est pas rempli");
-                    $("#messageErreur").css("visibility","visible");
                 }
                 else
                 {
@@ -68,7 +67,7 @@ and open the template in the editor.
                     })
                     .done(function(data) {
                         console.log("inDone");
-                        var co = data.adherent.co;
+                        var co = data.resultat.resultat;
                         if (co)
                         {                  
                             document.location.href="portailClient.html"
@@ -76,7 +75,6 @@ and open the template in the editor.
                         else
                         {
                             $("#messageErreur").html("Erreur de mot de passe ou d'adresse email");
-                            $("#messageErreur").css("visibility","visible");
                         }
                     })
                     .fail(function() {
