@@ -29,7 +29,7 @@ public class ListeEvenementsClientAction extends Action {
             List<Evenement> l = ServiceMetier.recupererEvenementsPourAdherent( (Adherent) session.getAttribute("user")  );
             request.setAttribute( "Evenements", l );
         } catch (ServiceException ex) {
-            Logger.getLogger(ListeActiviteAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListeEvenementsClientAction.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute( "Evenements", null );
         }
     }

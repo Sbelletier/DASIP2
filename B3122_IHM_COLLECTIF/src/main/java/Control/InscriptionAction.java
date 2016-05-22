@@ -29,10 +29,10 @@ public class InscriptionAction extends Action{
             Adherent a = new Adherent(request.getParameter("nom"), request.getParameter("prenom"), 
                     request.getParameter("adress"), request.getParameter("email"), request.getParameter("password"));
             ServiceMetier.ajouterAdherent(a);
-            request.setAttribute( "Adherent", a );
+            request.setAttribute( "success", true );
         } catch (ServiceException ex) {
             Logger.getLogger(ConnexionAction.class.getName()).log(Level.SEVERE, null, ex.toString());
-            request.setAttribute( "Adherent", null );
+            request.setAttribute( "success", false );
             
         }
         

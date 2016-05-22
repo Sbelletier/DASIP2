@@ -9,25 +9,24 @@ and open the template in the editor.
         <title>Mes Demandes </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
-        <style>
-            .mainDiv{
-                    position : relative;
-                    left : 25%;
-                    border : 2px solid black;
-                    width : 50%;
-            }
-            tr{
-                    border: 1px solid black;
-            }
-            td {
-                    border-right: 1px solid black;
-                    width:47%;
-            }
-        </style>
+		<style>
+			
+			.mainDiv{
+				position : relative;
+				left : 25%;
+				border : 2px solid black;
+				width : 50%;
+			}
+			tr{
+				border: 1px solid black;
+			}
+			td {
+				border-right: 1px solid black;
+			}
+		</style>
     </head>
 	<body>
-		<div> <a href="./portailClient.html"> &lt; accueil </a> <a href="./index.html" style="text-align:right;float:right;">&gt; déconnexion </a> </div>
+		<div> <a href="./Accueil.html"> &lt; accueil </a> <a href="./index.html" style="text-align:right;float:right;">&gt; déconnexion </a> </div>
 		<div id="divAccueil" style="text-align:center;" class="mainDiv">
 			<h1> Mes Demandes </h1>
 			<div>
@@ -41,44 +40,5 @@ and open the template in the editor.
 			</div>
 			<p id="page"> Page </p>
 		</div>
-	
-        
-        <script>
-            var topRow;
-            
-            $(document).ready(
-                function()
-                {
-                    //Etape 1 on recupere la ligne d'en-tête
-                    topRow = $("#divEvents>table>tbody").html(); //eviter le tbody et le table
-                    //console.log(topRow);
-                    $.ajax({
-                        url: './Controleur',
-                        type: 'POST',
-                        data: {
-                            action: 'demandesClient'
-                        },
-                        dataType: 'json'
-                    })
-                     .done(function(data) {
-                        console.log("inDone")
-                        var evenements = data.evenements;
-                        var contenuHtml = "";
-                        var i;
-                        for (i = 0; i < activites.length; i++) {
-                            contenuHtml += '<tr> <td>' + evenements[i].nomActivité + '</td> <td> '+ evenements[i].date + '</td> <td> '+ evenements[i].etat + '</td></tr>'; 
-                        }
-                        $("#divEvents>table>tbody").html(topRow + contenuHtml);
-                    })
-                    .fail(function(){
-                        
-                    })
-                }
-            
-            );
-            
-            
-            
-        </script>
-        </body>
+	</body>
 </html>

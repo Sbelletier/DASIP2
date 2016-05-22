@@ -80,17 +80,51 @@ public class Controleur extends HttpServlet {
                 }
                 
                 break;
+                
+                
             case "Inscription":
                 Action actionInscription = new InscriptionAction();
                 actionInscription.execute(request);
-                Util.JsonSender.sendResult(response.getWriter(), true);
+                if((boolean)request.getAttribute("success"))
+                {
+                    JsonSender.sendResult(response.getWriter(), true);
+                }
+                else
+                {
+                    Util.JsonSender.sendResult(response.getWriter(), false);
+                }//(Adherent) request.getAttribute("Adherent"));
                 break;
+             
+            case "detailEvenementClient":
+                Action actionDetailClient = new DetailEvenementClientAction();
+                actionDetailClient.execute(request);
+                Util.JsonSender.sendEvenementDetailClient(response.getWriter(), (Evenement) request.getAttribute("Evenement"));
+                break;
+                
             case "evenementsClient":
-                Action evtClient = new ListeEvenementsClientAction();
-                evtClient.execute(request);
-                Util.JsonSender.sendResult(response.getWriter(), (List<Evenement>) request.getAttribute("Evenements") );
-                break;   
-                      
+                Action actionEvtClient = new ListeEvenementsClientAction();
+                actionEvtClient.execute(request);
+                Util.JsonSender.sendResult(response.getWriter(), (List<Evenement>) request.getAttribute("Evenements"));
+                break;
+            
+            case "evenementsManager":
+                Action actionEvtManag = new ListeEvenementsManagerAction();
+                actionEvtManag.execute(request);
+                Util.JsonSender.sendEvenementsManager(response.getWriter(), (List<Evenement>) request.getAttribute("Evenements"));
+                break;
+                
+            case "changerEvenementManager":
+                Action actionDetailManag = new DetailEvenementManagerAction();
+                actionDetailManag.execute(request);
+                Util.JsonSender.sendLieuxPourEvenement(response.getWriter(), (Evenement) request.getAttribute("Evenement"));
+                break;
+            
+            case "setLieuEvenement":
+                Action actionSetLieuM = new SetLieuEvenementAction();
+                actionSetLieuM.execute(request);
+                Util.JsonSender.sendResult(response.getWriter(), (boolean)request.getAttribute("success"));
+                break;
+      
         }   
         
     }

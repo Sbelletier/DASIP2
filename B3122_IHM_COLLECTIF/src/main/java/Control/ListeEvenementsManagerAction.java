@@ -20,15 +20,16 @@ import metier.service.ServiceMetier;
  *
  * @author gspecq
  */
-public class LieuEvenementClientAction extends Action {
+public class ListeEvenementsManagerAction extends Action {
 
     @Override
     public void execute(HttpServletRequest request) {
         try {
-            Evenement evt = ServiceMetier.recupererEvenementParId( (int) request.getAttribute("id") );
-            request.setAttribute( "Evenement", evt );
+            HttpSession session = request.getSession();
+            List<Evenement> l = ServiceMetier.recupererEvenementsAvecOuSansLieu(false);
+            request.setAttribute( "Evenements", l );
         } catch (ServiceException ex) {
-            Logger.getLogger(ListeActiviteAction.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListeEvenementsClientAction.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute( "Evenements", null );
         }
     }

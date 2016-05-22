@@ -77,10 +77,43 @@ and open the template in the editor.
                     markerEvt.addListener('click', function() {
                         var content = '<div>Lieu: ' + markerEvt.title + '</div>';
                         content += '<div>Adresse: ' + data.lieu.adress + '</div>';
-                        content += '<div>Activite: ' + data.evenement.activite.nom + '</div>';
+                        content += '<div>Activite: ' + data.activite.denomination + '</div>';
                         infowindow.setContent(content);
                         infowindow.open(map, markerEvt);
                     });
+                    hmtldetailEvt = "";
+                    hmtldetailEvt += "<div style='display:inline-block;width:50%;'>"
+                    hmtldetailEvt += "<p> Activite : "+data.activite.denomination +"</p>";
+                    hmtldetailEvt += "<p> Date : "+data.evenement.date+"</p>";
+                    hmtldetailEvt += "<p> Lieu : "+data.lieu.adress+"</p>";
+                    htmldetailEvt += "</div>";
+                    if(data.activite.parEquipe)
+                    {
+                        for(i = 0; i<data.evenement.equipes.length(); i++)
+                        {
+                               htmldetailEvt += "<div>";
+                               htmldetailEvt += "<p> Equipe "+data.evenement.equipe[i].numero +"</p>";
+                               for(j = 0; j<data.evenement.equipes[i].membres.length(); j++)
+                                {
+                                    hmtldetailEvt += "<p> "+data.evenement.equipes[i].membres[j].prenom;
+                                    hmtldetailEvt += " "+data.evenement.equipes[i].membres[j].nom+"</p>";
+                                }
+                               htmldetailEvt += "</div>"
+                        }
+                    }
+                    else
+                    {
+                        for(i = 0; i<data.evenement.equipes.length(); i++)
+                        {
+                            for(j = 0; j<data.evenement.equipes[i].membres.length(); j++)
+                            {
+                                hmtldetailEvt += "<p> "+data.evenement.equipes[i].membres[j].prenom;
+                                hmtldetailEvt += " "+data.evenement.equipes[i].membres[j].nom+"</p>";
+                            }
+                        }
+                    }
+                    hmtldetailEvt += "<div style='display:inline-block;width:50%;'>"
+                    $("#detailEvenement").html(hmtldetailEvt);
                 })
             });
             

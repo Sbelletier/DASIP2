@@ -65,7 +65,7 @@ and open the template in the editor.
                             var contenuHtml = "";
                             var i;
                             for (i = 0; i < evenements.length; i++) {
-                                contenuHtml += '<tr> <td>' + evenements[i].nomActivité + '</td> <td> '+ evenements[i].date + '</td> <td> '+ evenements[i].lieu + '</td>'; 
+                                contenuHtml += '<tr> <td>' + evenements[i].nomActivite + '</td> <td> '+ evenements[i].date + '</td> <td> '+ evenements[i].lieu + '</td>'; 
                                 contenuHtml += '<td> <a onclick="changerEvenement('+i+');">Modifier </a> </td></tr>'; 
                             }
                             $("#divEvents>table>tbody").html(topRow + contenuHtml);

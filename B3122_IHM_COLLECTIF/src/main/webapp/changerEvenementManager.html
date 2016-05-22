@@ -28,9 +28,8 @@ and open the template in the editor.
         <div id="divprinc" style="text-align:center;" class="mainDiv">
             <h1>Evenement</h1>
             <div id="map" style="width:80%;height:80%;position:relative;left:10%;min-height: 400px;"></div>
-            <div id="detailsEvenement">
+
                 
-            </div>
         </div>
         <script>
             
@@ -71,19 +70,48 @@ and open the template in the editor.
                     {
                        markers.push(new google.maps.Marker({
                            map:map,
-                           position: {lat:lieux[i].lat, lng:ieux[i].lng},
+                           position: {lat:lieux[i].lat, lng:lieux[i].lng},
                            title: lieux[i].denomination,
                            indiceLieux:i
                        }) 
                        );
                        markers[i].addListener('click', function(){
-                           //TODO : ajax ici + alert
+                           setlieu(i);
+                       } );
+                       markers[i].addListener('hover', function(){
+                            var content = '<div>Lieu: ' + markerEvt.title + '</div>';
+                            content += '<div>Adresse: ' + data.lieux[i].adress + '</div>';
+                            content += '<div>Description ' + data.lieux[i].description + '</div>';
+                            infowindow.setContent(content);
+                            infowindow.open(map, markerEvt);
                        } );
                     }   
                 })
             });
             
-            
+            function setlieu(indice)
+            {
+                $.ajax({
+                    url: './Controleur',
+                    type: 'POST',
+                    data: {
+                        action: 'setLieuEvenement',
+                        idEvenement: idEvenement,
+                        idLieu: lieux[indice].id
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data){
+                    success = data.resultat.resultat;
+                    if(success){
+                        alert("Mise à jour effectuée");
+                        document.location.href="EvenementsManager.html";
+                    }
+                    else{
+                        alert("Echec de la mise à jour")
+                    }
+                })
+            }
         </script>
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDcVVJjfmxsNdbdUYeg9MjQoJJ6THPuap4&callback=initMap" async defer></script>
     </body>
